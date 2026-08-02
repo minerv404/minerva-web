@@ -1,0 +1,99 @@
+<a href="/" class="back-link">&larr; 一覧に戻る</a>
+
+<h2>{{.Book.Title}}</h2>
+
+<table class="detail-table">
+    <tbody>
+        <tr>
+            <th>ISBN</th>
+            <td>{{.Book.ISBN}}</td>
+        </tr>
+        <tr>
+            <th>タイトル</th>
+            <td>{{.Book.Title}}</td>
+        </tr>
+        {{if not (empty .Book.TitleKana)}}
+        <tr>
+            <th>タイトル（カナ）</th>
+            <td>{{deref .Book.TitleKana}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.Author)}}
+        <tr>
+            <th>著者</th>
+            <td>{{deref .Book.Author}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.AuthorKana)}}
+        <tr>
+            <th>著者（カナ）</th>
+            <td>{{deref .Book.AuthorKana}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.Publisher)}}
+        <tr>
+            <th>出版社</th>
+            <td>{{deref .Book.Publisher}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.PubDate)}}
+        <tr>
+            <th>出版日</th>
+            <td>{{deref .Book.PubDate}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.SeriesName)}}
+        <tr>
+            <th>シリーズ名</th>
+            <td>{{deref .Book.SeriesName}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.Description)}}
+        <tr>
+            <th>説明</th>
+            <td class="description">{{deref .Book.Description}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.ItemPrice)}}
+        <tr>
+            <th>価格</th>
+            <td>{{formatPrice .Book.ItemPrice}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.Location)}}
+        <tr>
+            <th>保管場所</th>
+            <td>{{deref .Book.Location}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.CoverURL)}}
+        <tr>
+            <th>表紙</th>
+            <td><img src="{{deref .Book.CoverURL}}" alt="表紙" style="max-width: 200px;"></td>
+        </tr>
+        {{end}}
+        <tr>
+            <th>取得元</th>
+            <td>{{.Book.SourceAPI}}</td>
+        </tr>
+        {{if not (empty .Book.CreatedAt)}}
+        <tr>
+            <th>追加日</th>
+            <td>{{formatDate .Book.CreatedAt}}</td>
+        </tr>
+        {{end}}
+        {{if not (empty .Book.UpdatedAt)}}
+        <tr>
+            <th>更新日</th>
+            <td>{{formatDate .Book.UpdatedAt}}</td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+
+<div class="form-actions">
+    <button hx-get="/books/{{.Book.ISBN}}/edit?from=detail" hx-target="#detail-content" hx-swap="innerHTML">編集</button>
+    <button hx-delete="/books/{{.Book.ISBN}}"
+            hx-confirm="この書籍を削除しますか？"
+            hx-redirect="/">削除</button>
+</div>

@@ -1,0 +1,52 @@
+<form hx-{{if eq .Action "create"}}post="/books"{{else}}put="/books/{{.Book.ISBN}}"{{end}}
+      hx-target="{{if .FromDetail}}#detail-content{{else}}#book-form-area{{end}}"
+      hx-swap="innerHTML">
+
+    <fieldset>
+        <legend>{{if eq .Action "create"}}新規書籍登録{{else}}書籍編集{{end}}</legend>
+
+        <label for="isbn">ISBN *</label>
+        <input type="text" id="isbn" name="isbn" value="{{.Book.ISBN}}" required {{if eq .Action "edit"}}readonly{{end}}>
+
+        <label for="title">タイトル *</label>
+        <input type="text" id="title" name="title" value="{{.Book.Title}}" required>
+
+        <label for="title_kana">タイトル（カナ）</label>
+        <input type="text" id="title_kana" name="title_kana" value="{{deref .Book.TitleKana}}">
+
+        <label for="author">著者</label>
+        <input type="text" id="author" name="author" value="{{deref .Book.Author}}">
+
+        <label for="author_kana">著者（カナ）</label>
+        <input type="text" id="author_kana" name="author_kana" value="{{deref .Book.AuthorKana}}">
+
+        <label for="publisher">出版社</label>
+        <input type="text" id="publisher" name="publisher" value="{{deref .Book.Publisher}}">
+
+        <label for="pub_date">出版日</label>
+        <input type="text" id="pub_date" name="pub_date" value="{{deref .Book.PubDate}}">
+
+        <label for="series_name">シリーズ名</label>
+        <input type="text" id="series_name" name="series_name" value="{{deref .Book.SeriesName}}">
+
+        <label for="description">説明</label>
+        <textarea id="description" name="description">{{deref .Book.Description}}</textarea>
+
+        <label for="cover_url">表紙URL</label>
+        <input type="text" id="cover_url" name="cover_url" value="{{deref .Book.CoverURL}}">
+
+        <label for="item_price">価格（円）</label>
+        <input type="number" id="item_price" name="item_price" value="{{deref .Book.ItemPrice}}">
+
+        <label for="location">保管場所</label>
+        <input type="text" id="location" name="location" value="{{deref .Book.Location}}">
+
+        <input type="hidden" name="source_api" value="{{.Book.SourceAPI}}">
+        {{if .FromDetail}}<input type="hidden" name="from_detail" value="true">{{end}}
+
+        <div class="form-actions">
+            <button type="submit">{{if eq .Action "create"}}登録{{else}}更新{{end}}</button>
+            <button type="button" hx-get="{{if .FromDetail}}/books/{{.Book.ISBN}}{{else}}/books{{end}}" hx-target="{{if .FromDetail}}#detail-content{{else}}#book-form-area{{end}}" hx-swap="innerHTML">キャンセル</button>
+        </div>
+    </fieldset>
+</form>

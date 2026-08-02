@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS books (
+    isbn            VARCHAR(13) PRIMARY KEY,
+    title           TEXT NOT NULL,
+    title_kana      TEXT,
+    author          TEXT,
+    author_kana     TEXT,
+    publisher       TEXT,
+    pub_date        VARCHAR(20),
+    series_name     TEXT,
+    description     TEXT,
+    cover_url       TEXT,
+    item_price      INTEGER,
+    source_api      VARCHAR(20) NOT NULL,
+    raw_response    JSONB,
+    location        TEXT,
+    fetched_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at      TIMESTAMP
+);

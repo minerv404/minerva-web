@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>minerv404</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+2&display=swap">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/htmx.min.js"></script>
+</head>
+<body>
+    <h1>minerv404</h1>
+
+    {{if .IsDetail}}
+        <div id="detail-content">
+            {{template "_book_detail.html" .}}
+        </div>
+    {{else}}
+        <div class="search-bar">
+            <input type="search" name="q" placeholder="タイトル・著者・ISBNで検索..."
+                   value="{{.Query}}"
+                   hx-get="/books"
+                   hx-trigger="keyup changed delay:300ms"
+                   hx-target="#book-list"
+                   hx-push-url="true">
+            <select name="per_page"
+                    hx-get="/books"
+                    hx-trigger="change"
+                    hx-target="#book-list"
+                    hx-push-url="true"
+                    hx-include="[name='q']">
+                <option value="10" {{if eq .PerPage 10}}selected{{end}}>10件</option>
+                <option value="20" {{if eq .PerPage 20}}selected{{end}}>20件</option>
+                <option value="50" {{if eq .PerPage 50}}selected{{end}}>50件</option>
+                <option value="100" {{if eq .PerPage 100}}selected{{end}}>100件</option>
+            </select>
+            <button hx-get="/books/new" hx-target="#book-form-area" hx-swap="innerHTML">新規追加</button>
+        </div>
+
+        <div id="book-form-area"></div>
+
+        <div id="book-list">
+            {{template "_book_list.html" .}}
+        </div>
+    {{end}}
+</body>
+</html>

@@ -1,0 +1,55 @@
+<div class="table-container">
+<table>
+    <thead>
+        <tr>
+            <th><a href="{{sortURL "isbn" .SortField .SortOrder .Query .PerPage}}">ISBN{{sortIndicator "isbn" .SortField .SortOrder}}</a></th>
+            <th><a href="{{sortURL "title" .SortField .SortOrder .Query .PerPage}}">タイトル{{sortIndicator "title" .SortField .SortOrder}}</a></th>
+            <th><a href="{{sortURL "author" .SortField .SortOrder .Query .PerPage}}">著者{{sortIndicator "author" .SortField .SortOrder}}</a></th>
+            <th><a href="{{sortURL "publisher" .SortField .SortOrder .Query .PerPage}}">出版社{{sortIndicator "publisher" .SortField .SortOrder}}</a></th>
+            <th><a href="{{sortURL "item_price" .SortField .SortOrder .Query .PerPage}}">価格{{sortIndicator "item_price" .SortField .SortOrder}}</a></th>
+            <th><a href="{{sortURL "created_at" .SortField .SortOrder .Query .PerPage}}">追加日{{sortIndicator "created_at" .SortField .SortOrder}}</a></th>
+            <th><a href="{{sortURL "updated_at" .SortField .SortOrder .Query .PerPage}}">更新日{{sortIndicator "updated_at" .SortField .SortOrder}}</a></th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Books}}
+        <tr id="book-{{.ISBN}}">
+            <td>{{.ISBN}}</td>
+            <td><a href="/books/{{.ISBN}}" class="title-link">{{.Title}}</a></td>
+            <td>{{deref .Author}}</td>
+            <td>{{deref .Publisher}}</td>
+            <td>{{formatPrice .ItemPrice}}</td>
+            <td>{{formatDate .CreatedAt}}</td>
+            <td>{{formatDate .UpdatedAt}}</td>
+            <td class="actions">
+                <button hx-get="/books/{{.ISBN}}/edit" hx-target="#book-form-area" hx-swap="innerHTML">編集</button>
+                <button hx-delete="/books/{{.ISBN}}"
+                        hx-confirm="この書籍を削除しますか？"
+                        hx-target="#book-{{.ISBN}}"
+                        hx-swap="outerHTML">削除</button>
+            </td>
+        </tr>
+        {{else}}
+        <tr><td colspan="8">書籍が見つかりませんでした</td></tr>
+        {{end}}
+    </tbody>
+</table>
+</div>
+
+{{if gt .TotalPages 1}}
+<div class="pagination">
+    {{if gt .Page 1}}
+    <button hx-get="/books?q={{.Query}}&per_page={{.PerPage}}&sort={{.SortField}}&order={{.SortOrder}}&page={{sub .Page 1}}" hx-target="#book-list" hx-push-url="true">&laquo; 前</button>
+    {{end}}
+    <span>{{.Page}} / {{.TotalPages}} (全{{.Total}}件)</span>
+    {{if lt .Page .TotalPages}}
+    <button hx-get="/books?q={{.Query}}&per_page={{.PerPage}}&sort={{.SortField}}&order={{.SortOrder}}&page={{add .Page 1}}" hx-target="#book-list" hx-push-url="true">次 &raquo;</button>
+    {{end}}
+</div>
+{{else if eq .Total 0}}
+{{else}}
+<div class="pagination">
+    <span>全{{.Total}}件</span>
+</div>
+{{end}}
