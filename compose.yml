@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    image: ghcr.io/minerv404/minerva-web:latest
     ports:
       - "8081:8081"
     environment:
