@@ -1,83 +1,43 @@
-# Minerva Web
+# minerva-web
 
-書籍情報管理システムのWeb UIです。
+書籍管理用 Web フロントエンド + バックエンド API
 
-## 技術スタック
+## 構成
 
-- **Backend**: Go 1.26 (net/http)
-- **Frontend**: HTMX 2.0 + water.css
-- **Database**: PostgreSQL 16
-
-## 機能
-
-- 書籍情報のCRUD操作
-- リアルタイム検索（タイトル・著者・ISBN）
-- 列の並び替え
-- ページネーション（1ページあたりの件数変更可能）
-- ソフトデリート（deleted_atによる論理削除）
+- バックエンド: Go 1.26 (net/http)
+- フロントエンド: HTMX 2.0 + water.css
+- データベース: PostgreSQL 16
 
 ## 起動方法
 
-### Docker Compose（推奨）
+### Docker Compose
 
 ```bash
-# .env ファイルを確認/編集
-cat .env
-
-# 起動
+vim .env
 docker compose up -d
-
-# ログ確認
-docker compose logs -f app
 ```
 
-アプリケーションは http://localhost:8081 でアクセス可能です。
+http://localhost:8081 で起動します。
 
-### ローカル開発
+### 手元での開発
 
 ```bash
-# 依存パッケージのインストール
 go mod download
-
-# ビルド
 go build -o minerva-web .
-
-# 実行
 ./minerva-web
 ```
 
 ## 環境変数
 
-`.env` ファイルで以下を設定します：
+`.env` ファイルで以下を設定します。
 
 ```
-POSTGRES_DB=bibliography
-POSTGRES_USER=bibliography
-POSTGRES_PASSWORD=bibliography
+POSTGRES_DB=<your-db-host>
+POSTGRES_USER=<your-db-user>
+POSTGRES_PASSWORD=<your-db-password>
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 ```
-
-## ディレクトリ構成
-
-```
-.
-├── main.go                    # エントリポイント
-├── internal/
-│   ├── config/config.go       # 設定読み込み
-│   ├── db/db.go               # DB接続プール
-│   ├── model/book.go          # Bookモデル
-│   ├── repository/book.go     # DB操作
-│   └── handler/
-│       ├── handler.go         # ルーティング、テンプレート
-│       ├── page.go            # ページ表示
-│       ├── book.go            # CRUDハンドラ
-│       └── handler_test.go    # テスト
-├── templates/                 # HTMLテンプレート
-├── static/                    # 静的ファイル（CSS, JS）
-└── schema.sql                 # DBスキーマ
-```
-
 ## テスト
 
 ```bash
@@ -96,7 +56,3 @@ go test ./...
 | GET | `/books/{isbn}/edit` | 編集フォーム |
 | PUT | `/books/{isbn}` | 書籍更新 |
 | DELETE | `/books/{isbn}` | 書籍削除（ソフトデリート） |
-
-## ライセンス
-
-Private
