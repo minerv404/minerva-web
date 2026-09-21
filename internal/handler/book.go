@@ -150,8 +150,14 @@ func (h *Handler) showBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := h.templates.ExecuteTemplate(w, "layout.html", data); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if r.Header.Get("HX-Request") == "true" {
+		if err := h.templates.ExecuteTemplate(w, "_book_detail.html", data); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		if err := h.templates.ExecuteTemplate(w, "layout.html", data); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	}
 }
 

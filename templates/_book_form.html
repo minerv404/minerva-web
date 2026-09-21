@@ -46,7 +46,7 @@
 
         <div class="form-actions">
             <button type="submit">{{if eq .Action "create"}}登録{{else}}更新{{end}}</button>
-            <button type="button" hx-get="{{if .FromDetail}}/books/{{.Book.ISBN}}{{else}}/books{{end}}" hx-target="{{if .FromDetail}}#detail-content{{else}}#book-form-area{{end}}" hx-swap="innerHTML">キャンセル</button>
+            {{if .FromDetail}}<button type="button" hx-get="/books/{{.Book.ISBN}}" hx-target="#detail-content" hx-swap="innerHTML">キャンセル</button>{{else}}<button type="button" onclick="document.getElementById('book-form-area').innerHTML=''">キャンセル</button>{{end}}
         </div>
     </fieldset>
 </form>
